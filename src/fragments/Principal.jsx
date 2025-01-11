@@ -10,41 +10,36 @@ import "../css/Principal_Style.css";
 import Footer from "./Footer";
 
 const Principal = () => {
-  const [espData, setEspData] = useState({
-    humedadSuelo: 10,
-    temperatura: 25,
-    humedadRelativa: 60,
-    nivelAgua: 80,
-    ph: 7,
-  });
+  const [espData, setEspData] = useState([]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://<ESP32_IP>/datos"); // Cambia <ESP32_IP> por la dirección IP de tu ESP32
+        const response = await fetch("/datos"); // SE DEBE REEMPLAZAR LA IP DEL ESP32 EN EL PACKAGE JSON EN LA SECCION DEL PROXY 
         if (!response.ok) {
           throw new Error("Error al obtener los datos del ESP32");
         }
         const jsonResponse = await response.json();
         const decodedData = JSON.parse(atob(jsonResponse.data)); // Decodificar Base64 y convertir a objeto JSON
-
+  
         setEspData({
           humedadSuelo: decodedData.humedadSuelo,
           temperatura: decodedData.temperatura,
           humedadRelativa: decodedData.humedadRelativa,
-          nivelAgua: decodedData.nivelAgua * 100, // Si es un valor binario, lo ajustamos
+          nivelAgua: decodedData.nivelAgua * 100, 
           ph: decodedData.ph,
         });
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     };
+  
+    const interval = setInterval(fetchData, 2000); // Actualiza cada 2 segundos para el tiempo real
+    return () => clearInterval(interval); 
+  }, []);
+  
 
-    const interval = setInterval(fetchData, 2000); // Actualiza cada 2 segundos
-    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
-  }, []);*/
-
-  useEffect(() => {
+  /*useEffect(() => {
     // Simulación de datos en tiempo real
     const simulateData = () => {
       setEspData({
@@ -58,7 +53,7 @@ const Principal = () => {
 
     const interval = setInterval(simulateData, 2000); // Actualización cada 2 segundos
     return () => clearInterval(interval); // Limpieza del intervalo
-  }, []);
+  }, []);*/
 
   const variables = [
     {
