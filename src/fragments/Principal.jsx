@@ -124,7 +124,7 @@ const Principal = () => {
             <h3 className="variable-title">{variable.nombre}</h3>
             <div className="content-row">
               <div className="progress-bar">
-                <ChangingProgressProvider values={[0, variable.valor]}>
+                <ChangingProgressProvider values={[variable.valor, variable.valor]}>
                   {(value) => (
                     <CircularProgressbar
                       value={value}
