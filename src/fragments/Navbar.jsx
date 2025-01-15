@@ -6,7 +6,7 @@ const Navbar = () => {
 
     return (
         <header className='header1'>
-            <a href="/principalusuario" className="logo">Sistema de Riego en tiempo real</a>
+            <a href="/principalusuario" className="logo">Sistema de riego en tiempo real</a>
 
             <input type="checkbox" id='check' />
             <label htmlFor="check" className='icons1'>

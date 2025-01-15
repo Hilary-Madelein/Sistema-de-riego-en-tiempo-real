@@ -10,50 +10,38 @@ import "../css/Principal_Style.css";
 import Footer from "./Footer";
 
 const Principal = () => {
-  const [espData, setEspData] = useState([]);
+  const [espData, setEspData] = useState({
+    humedadSuelo: null,
+    temperatura: null,
+    humedadRelativa: null,
+    nivelAgua: null,
+    ph: null,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/datos"); // SE DEBE REEMPLAZAR LA IP DEL ESP32 EN EL PACKAGE JSON EN LA SECCION DEL PROXY 
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos del ESP32");
-        }
-        const jsonResponse = await response.json();
-        const decodedData = JSON.parse(atob(jsonResponse.data)); // Decodificar Base64 y convertir a objeto JSON
-  
-        setEspData({
-          humedadSuelo: decodedData.humedadSuelo,
-          temperatura: decodedData.temperatura,
-          humedadRelativa: decodedData.humedadRelativa,
-          nivelAgua: decodedData.nivelAgua * 100, 
-          ph: decodedData.ph,
+        const response = await fetch("http://localhost:5006/api/fetch-datos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
         });
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos del backend");
+        }
+
+        const jsonResponse = await response.json();
+        setEspData(jsonResponse.data);
       } catch (error) {
-        console.error("Error al obtener los datos:", error);
+        console.error("Error al obtener los datos desde el backend:", error);
       }
     };
-  
-    const interval = setInterval(fetchData, 2000); // Actualiza cada 2 segundos para el tiempo real
-    return () => clearInterval(interval); 
+
+    const interval = setInterval(fetchData, 2000); // Actualiza cada 2 segundos para datos en tiempo real
+    return () => clearInterval(interval);
   }, []);
-  
-
-  /*useEffect(() => {
-    // Simulación de datos en tiempo real
-    const simulateData = () => {
-      setEspData({
-        humedadSuelo: Math.floor(Math.random() * 100), // Valores aleatorios entre 0 y 100
-        temperatura: Math.floor(Math.random() * 50), // Valores aleatorios entre 0 y 50 °C
-        humedadRelativa: Math.floor(Math.random() * 100), // Valores aleatorios entre 0 y 100
-        nivelAgua: Math.floor(Math.random() * 100), // Valores aleatorios entre 0 y 100%
-        ph: (Math.random() * 3 + 5).toFixed(1), // Valores aleatorios entre 5 y 8
-      });
-    };
-
-    const interval = setInterval(simulateData, 2000); // Actualización cada 2 segundos
-    return () => clearInterval(interval); // Limpieza del intervalo
-  }, []);*/
 
   const variables = [
     {
@@ -114,7 +102,7 @@ const Principal = () => {
       },
     },
   ];
-
+  
   return (
     <div>
       <Navbar />
@@ -124,11 +112,11 @@ const Principal = () => {
             <h3 className="variable-title">{variable.nombre}</h3>
             <div className="content-row">
               <div className="progress-bar">
-                <ChangingProgressProvider values={[variable.valor, variable.valor]}>
+                <ChangingProgressProvider values={[variable.valor || 0, variable.valor || 0]}>
                   {(value) => (
                     <CircularProgressbar
                       value={value}
-                      text={`${value}${variable.unidad}`}
+                      text={`${value || 0}${variable.unidad}`}
                       circleRatio={0.75}
                       styles={buildStyles({
                         rotation: 1 / 2 + 1 / 8,
@@ -150,9 +138,10 @@ const Principal = () => {
                   />
                 </div>
                 <p className="variable-value">
-                  Valor Actual: {variable.valor}
+                  Valor Actual: {variable.valor !== null && variable.valor !== undefined ? variable.valor : "Cargando..."}
                   {variable.unidad}
                 </p>
+
                 <p
                   className="warning-text"
                   style={{ color: variable.advertencia.color }}
