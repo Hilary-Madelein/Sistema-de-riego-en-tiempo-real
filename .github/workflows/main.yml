@@ -1,13 +1,10 @@
-name: Main CI/CD Pipeline for SISTEMA DE RIEGO
+name: Main CI/CD SISTEMA DE RIEGO
 
 on:
   push:
     branches:
-      - main # Rama que activa el workflow automáticamente
-  pull_request: # Opcional: activa el workflow en solicitudes de extracción
-    branches:
       - main
-  workflow_dispatch: # Permite ejecutar el workflow manualmente desde GitHub Actions
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,15 +20,19 @@ jobs:
     name: Build Docker Image
     uses: ./.github/workflows/build-docker.yml
     secrets: inherit
+    with:
+      image-tag: "sistema-riego:latest"
 
   dast-scan:
     name: DAST Scan
     needs: build
     uses: ./.github/workflows/dast-scan.yml
     secrets: inherit
+    with:
+      image-tag: "sistema-riego:latest"
 
   deploy:
     name: Deploy to Vercel
     needs: dast-scan
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy-to-vercel.yml
     secrets: inherit

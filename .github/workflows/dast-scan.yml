@@ -6,14 +6,18 @@ on:
       image-tag:
         type: string
         required: true
-        default: sistema-riego:latest
+        description: "The name and tag of the Docker image to scan"
 
 jobs:
   dast-scan:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Pull Docker Image
+        run: docker pull ${{ inputs.image-tag }}
 
       - name: Start Docker container
         run: |

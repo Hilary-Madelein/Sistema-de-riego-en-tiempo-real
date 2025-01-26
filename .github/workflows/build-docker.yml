@@ -5,12 +5,13 @@ on:
     inputs:
       image-tag:
         type: string
+        description: "The name and tag of the Docker image to build"
         required: true
-        default: sistema-riego:latest
 
 jobs:
-  build:
+  build-docker:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
