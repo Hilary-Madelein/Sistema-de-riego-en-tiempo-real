@@ -1,37 +1,27 @@
-name: CI/CD Pipeline
+name: Deploy to Vercel
 
 on:
   push:
     branches:
-      - main  # Cambia 'main' por la rama que deseas monitorizar para despliegues
+      - main
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout del código
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Configuración de Node.js
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16  # Usa la versión de Node.js que necesita tu proyecto
+          node-version: '16'
 
-      # 3. Instalar dependencias
-      - name: Install dependencies
-        run: npm install
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
-      # 4. Ejecutar pruebas (opcional)
-      - name: Run tests
-        run: npm test
-
-      # 5. Desplegar a Vercel
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Agrega este token a tus Secrets en GitHub
-        run: |
-          npm install -g vercel
-          vercel --prod --token=$VERCEL_TOKEN
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel --prod
