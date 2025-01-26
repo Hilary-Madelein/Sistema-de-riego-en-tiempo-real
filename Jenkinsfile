@@ -21,12 +21,13 @@ pipeline {
                     git config user.name "Jenkins CI"
                     git config user.email "jenkins@example.com"
                     git add .
-                    git commit -m "Automated deployment from Jenkins"
+                    git commit -m "Automated deployment from Jenkins" || echo "No changes to commit"
                     git push https://$GIT_USER:$GIT_PASSWORD@github.com/Hilary-Madelein/Sistema-de-riego-en-tiempo-real.git HEAD:main
                     '''
                 }
             }
         }
+
     }
 
     post {
