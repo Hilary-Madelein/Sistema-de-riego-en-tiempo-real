@@ -22,7 +22,7 @@ pipeline {
                     git config user.email "jenkins@example.com"
                     git add .
                     git commit -m "Automated deployment from Jenkins"
-                    git push https://github.com/Hilary-Madelein/Sistema-de-riego-en-tiempo-real.git HEAD:main
+                    git push https://$GIT_USER:$GIT_PASSWORD@github.com/Hilary-Madelein/Sistema-de-riego-en-tiempo-real.git HEAD:main
                     '''
                 }
             }
