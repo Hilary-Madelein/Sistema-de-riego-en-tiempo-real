@@ -30,6 +30,14 @@ jobs:
     secrets: inherit
     with:
       image-tag: "sistema-riego:latest"
+  
+  codeql-analysis:
+    name: CodeQL Analysis
+    needs: dast-scan
+    uses: ./.github/workflows/sca-codeql.yml
+    with:
+      branch: main
+    secrets: inherit
 
   deploy:
     name: Deploy to Vercel
