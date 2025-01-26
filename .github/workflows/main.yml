@@ -1,0 +1,30 @@
+name: Main CI/CD SISTEMA DE RIEGO 
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
+  actions: read
+  security-events: write
+  packages: write
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy to Vercel
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
