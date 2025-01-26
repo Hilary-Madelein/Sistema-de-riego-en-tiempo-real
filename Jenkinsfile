@@ -28,11 +28,19 @@ pipeline {
             }
         }
 
+        stage('Deploy to Vercel') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
+            steps {
+                sh 'curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_U1qpOLM7FhhjKA2jAqnxIZAT8VCB/2vRL00vyw8'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully and changes pushed to GitHub.'
+            echo 'Pipeline completed successfully and changes pushed to GitHub and deployed to Vercel.'
         }
         failure {
             echo 'Pipeline failed. Check the logs for more details.'
