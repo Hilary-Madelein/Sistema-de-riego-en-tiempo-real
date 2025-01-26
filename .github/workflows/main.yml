@@ -1,19 +1,17 @@
-name: Main CI/CD SISTEMA DE RIEGO
+name: CI/CD Pipeline with DAST, CodeQL, and Deployment
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write
-  checks: write
-  pull-requests: write
-  actions: read
   security-events: write
-  packages: write
 
 jobs:
   build:
@@ -23,21 +21,21 @@ jobs:
     with:
       image-tag: "sistema-riego:latest"
 
+  codeql:
+    name: CodeQL Analysis
+    needs: build
+    uses: ./.github/workflows/sca-codeql.yml
+    secrets: inherit
+    with:
+      branch: main
+
   dast-scan:
     name: DAST Scan
-    needs: build
+    needs: codeql
     uses: ./.github/workflows/dast-scan.yml
     secrets: inherit
     with:
-      image-tag: "sistema-riego:latest"
-  
-  codeql-analysis:
-    name: CodeQL Analysis
-    needs: dast-scan
-    uses: ./.github/workflows/sca-codeql.yml
-    with:
-      branch: main
-    secrets: inherit
+      image-tag: sistema-riego:latest
 
   deploy:
     name: Deploy to Vercel
