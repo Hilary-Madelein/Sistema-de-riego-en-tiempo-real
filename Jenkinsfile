@@ -20,10 +20,9 @@ pipeline {
         stage('Push to GitHub') {
             steps {
                 script {
-                    // Obtener credenciales dentro del bloque 'script'
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
-                        // Configuración de Git
                         sh '''
+                        echo "Configurando Git..."
                         git config user.name "Jenkins CI"
                         git config user.email "jenkins@example.com"
                         
