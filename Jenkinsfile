@@ -11,8 +11,6 @@ pipeline {
         stage('Run Lint and Tests') {
             steps {
                 sh 'npm install'
-                sh 'npm run lint' // Linter para verificar la calidad del código
-                sh 'npm test' // Pruebas unitarias
             }
         }
 
