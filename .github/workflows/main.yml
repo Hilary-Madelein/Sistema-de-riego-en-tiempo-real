@@ -1,4 +1,4 @@
-name: CI/CD Pipeline with DAST, CodeQL, and Deployment
+name: CI/CD Pipeline with DAST, SCA, and Deployment
 
 on:
   push:
