@@ -26,17 +26,15 @@ jobs:
     with:
       image-tag: "sistema-riego:latest"
 
-  codeql:
-    name: CodeQL Analysis
+  sca-sonarcloud:
+    name: SonarCloud Analysis
     needs: build
-    uses: ./.github/workflows/sca-codeql.yml
+    uses: ./.github/workflows/sca-sonarcloud.yml
     secrets: inherit
-    with:
-      branch: main
 
   dast-scan:
     name: DAST Scan
-    needs: codeql
+    needs: sca-sonarcloud
     uses: ./.github/workflows/dast-scan.yml
     secrets: inherit
     with:
