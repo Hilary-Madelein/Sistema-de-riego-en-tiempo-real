@@ -10,14 +10,12 @@ const Footer = () => {
             <div className="footerLeft">
               <p>Elaborado por:</p>
               <ul className="footerNames">
-                <li>Nombre 1</li>
-                <li>Nombre 2</li>
+                <li>Hilary Madeley Calva Camacho</li>
               </ul>
             </div>
             {/* Columna derecha */}
             <div className="footerRight">
               <p>© 2025 Derechos Reservados</p>
-              <p className="footerUniversity">Nombre de la Universidad</p>
             </div>
           </div>
         </div>
