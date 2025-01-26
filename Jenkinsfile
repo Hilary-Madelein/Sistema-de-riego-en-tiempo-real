@@ -21,28 +21,20 @@ pipeline {
             steps {
                 script {
                     // Obtener credenciales dentro del bloque 'script'
-                    def gitUser = ''
-                    def gitPassword = ''
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
-                        gitUser = env.GIT_USER
-                        gitPassword = env.GIT_PASSWORD
+                        // Configuración de Git
+                        sh '''
+                        git config user.name "Jenkins CI"
+                        git config user.email "jenkins@example.com"
+                        
+                        echo "Agregando cambios al commit..."
+                        git add .
+                        git commit -m "Automated deployment from Jenkins" || echo "No changes to commit"
+
+                        echo "Pushing changes to GitHub..."
+                        git push https://${GIT_USER}:${GIT_PASSWORD}@github.com/Hilary-Madelein/Sistema-de-riego-en-tiempo-real.git HEAD:main
+                        '''
                     }
-
-                    // Realizar configuración y push a GitHub
-                    sh '''
-                    git config user.name "Jenkins CI"
-                    git config user.email "jenkins@example.com"
-                    
-                    echo "Comprobando cambios..."
-                    git status
-
-                    echo "Agregando cambios al commit..."
-                    git add .
-                    git commit -m "Automated deployment from Jenkins" || echo "No changes to commit"
-
-                    echo "Pushing changes to GitHub..."
-                    git push https://${gitUser}:${gitPassword}@github.com/Hilary-Madelein/Sistema-de-riego-en-tiempo-real.git HEAD:main
-                    '''
                 }
             }
         }
