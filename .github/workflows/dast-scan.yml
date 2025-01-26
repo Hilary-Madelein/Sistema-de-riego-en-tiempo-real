@@ -13,20 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Clonar el repositorio
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Pull Docker Image
-        run: docker pull ${{ inputs.image-tag }}
+      # Construir la imagen de Docker
+      - name: Build Docker Image
+        run: docker build -t ${{ inputs.image-tag }} .
 
+      # Iniciar el contenedor de la aplicación
       - name: Start Docker container
         run: |
           docker rm -f demoApp || true
           docker run -d -p 3000:3000 --name demoApp ${{ inputs.image-tag }}
 
+      # Verificar si el contenedor está corriendo
       - name: Verify container status
         run: docker ps
 
+      # Verificar si el endpoint del contenedor está activo
       - name: Verify container endpoint
         run: |
           for i in {1..10}; do
@@ -38,6 +43,7 @@ jobs:
           done
           echo "Service did not start"; exit 1
 
+      # Ejecutar escaneo DAST con ZAP
       - name: Run ZAP DAST Scan
         uses: zaproxy/action-full-scan@v0.12.0
         with:
@@ -46,12 +52,14 @@ jobs:
           target: 'http://localhost:3000'
           cmd_options: '-a'
 
+      # Subir el reporte generado por ZAP
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v3
         with:
           name: ZAP_Report
           path: zap_report.html
 
+      # Limpiar los recursos de Docker
       - name: Stop and clean up Docker container
         if: always()
         run: |
