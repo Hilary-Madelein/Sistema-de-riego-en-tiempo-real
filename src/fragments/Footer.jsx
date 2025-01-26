@@ -15,6 +15,7 @@ const Footer = () => {
             </div>
             {/* Columna derecha */}
             <div className="footerRight">
+              <p>© 2025 Derechos Reservados</p>
               <p>Universidad Nacional de Loja</p>
             </div>
           </div>
