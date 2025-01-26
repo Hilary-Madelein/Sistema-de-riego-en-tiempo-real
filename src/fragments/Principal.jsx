@@ -19,28 +19,19 @@ const Principal = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:5006/api/fetch-datos", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        });
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos del backend");
-        }
-
-        const jsonResponse = await response.json();
-        setEspData(jsonResponse.data);
-      } catch (error) {
-        console.error("Error al obtener los datos desde el backend:", error);
-      }
+    const generateRandomData = () => {
+      setEspData({
+        humedadSuelo: Math.floor(Math.random() * 100), // Valores entre 0 y 100
+        temperatura: Math.floor(Math.random() * 40),  // Valores entre 0 y 40
+        humedadRelativa: Math.floor(Math.random() * 100), // Valores entre 0 y 100
+        nivelAgua: Math.floor(Math.random() * 100), // Valores entre 0 y 100
+        ph: (Math.random() * (9 - 5) + 5).toFixed(1), // Valores entre 5.0 y 9.0
+      });
     };
 
-    const interval = setInterval(fetchData, 2000); // Actualiza cada 2 segundos para datos en tiempo real
-    return () => clearInterval(interval);
+    generateRandomData(); // Genera datos al cargar
+    const interval = setInterval(generateRandomData, 2000); // Actualiza cada 2 segundos
+    return () => clearInterval(interval); // Limpia el intervalo al desmontar
   }, []);
 
   const variables = [
@@ -65,8 +56,8 @@ const Principal = () => {
         espData.temperatura > 35
           ? { mensaje: "¡Temperatura alta!", color: "#FF0000" }
           : espData.temperatura < 15
-            ? { mensaje: "Temperatura baja", color: "#A35C7A" }
-            : { mensaje: "Temperatura adecuada", color: "#00BFFF" },
+          ? { mensaje: "Temperatura baja", color: "#A35C7A" }
+          : { mensaje: "Temperatura adecuada", color: "#00BFFF" },
     },
     {
       nombre: "Humedad Relativa",
@@ -102,7 +93,7 @@ const Principal = () => {
       },
     },
   ];
-  
+
   return (
     <div>
       <Navbar />
