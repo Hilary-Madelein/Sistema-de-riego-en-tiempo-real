@@ -33,7 +33,7 @@ pipeline {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
-                sh 'curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_U1qpOLM7FhhjKA2jAqnxIZAT8VCB/2vRL00vyw8'
+                sh 'curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_U1qpOLM7FhhjKA2jAqnxIZAT8VCB/PfUhopFjqj'
             }
         }
     }
