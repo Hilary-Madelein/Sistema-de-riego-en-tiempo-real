@@ -34,5 +34,5 @@ jobs:
   deploy:
     name: Deploy to Vercel
     needs: dast-scan
-    uses: ./.github/workflows/deploy-to-vercel.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
