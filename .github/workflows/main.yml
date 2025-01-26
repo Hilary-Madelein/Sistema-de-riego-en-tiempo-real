@@ -1,13 +1,13 @@
 name: Main CI/CD SISTEMA DE RIEGO 
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
-  workflow_dispatch:
+    push:
+      branches:
+        - main # O reemplázalo con la rama en la que deseas activar el workflow automáticamente
+    pull_request: # Opcional: activa el workflow en solicitudes de extracción
+      branches:
+        - main
+    workflow_dispatch: # Permite ejecutar manualmente el workflow desde GitHub Actions
 
 permissions:
   contents: read
