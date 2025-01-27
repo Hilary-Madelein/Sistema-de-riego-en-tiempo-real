@@ -2,11 +2,9 @@ name: CI/CD Pipeline with DAST, SCA, and Deployment
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
   workflow_dispatch:
 
 permissions:
