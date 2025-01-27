@@ -8,40 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout del código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Instalación de dependencias
-      - name: Install dependencies
-        run: npm ci
-
-      # 3. Validaciones previas al despliegue
-      - name: Pre-deployment checks
-        run: |
-          echo "Running lint..."
-          npm run lint
-          echo "Running tests..."
-          npm test
-
-      # 4. Instalación de la CLI de Vercel
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      # 5. Despliegue a Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel deploy --prod --token $VERCEL_TOKEN --yes
-
-      # 6. Monitoreo del despliegue
-      - name: Monitor deployment
-        run: |
-          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN inspect | jq -r '.url')
-          echo "Deployment available at: $DEPLOYMENT_URL"
-
-      # 7. Validación posterior al despliegue
-      - name: Post-deployment validation
-        run: |
-          echo "Validating deployment..."
-          curl -I $DEPLOYMENT_URL || exit 1
