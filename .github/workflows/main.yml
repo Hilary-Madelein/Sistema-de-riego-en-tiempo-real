@@ -26,6 +26,7 @@ jobs:
 
   build-docker:
     name: Build Docker Image
+    needs: build
     uses: ./.github/workflows/build-docker.yml
     secrets: inherit
     with:
