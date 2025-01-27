@@ -24,19 +24,19 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  build-docker:
-    name: Build Docker Image
-    needs: build
-    uses: ./.github/workflows/build-docker.yml
-    secrets: inherit
-    with:
-      image-tag: "sistema-riego:latest"
-
   sca-sonarcloud:
     name: SonarCloud Analysis
     needs: build
     uses: ./.github/workflows/sca-sonarcloud.yml
     secrets: inherit
+
+  build-docker:
+    name: Build Docker Image
+    needs: sca-sonarcloud
+    uses: ./.github/workflows/build-docker.yml
+    secrets: inherit
+    with:
+      image-tag: "sistema-riego:latest"
 
   dast-scan:
     name: DAST Scan
